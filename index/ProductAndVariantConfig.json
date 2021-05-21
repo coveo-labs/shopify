@@ -1,0 +1,103 @@
+{
+  "Services": [
+    {
+      "Url": "https://hg4epjdj0g.execute-api.us-east-1.amazonaws.com/",
+      "Paging": {
+        "OffsetStart": 1,
+        "NextPageKey": "nextpage",
+        "PageSize": 50,
+        "OffsetType": "url",
+        "Parameters": {
+          "Offset": "page",
+          "limit": "limit"
+        }
+      },
+      "Endpoints": [
+        {
+          "Headers": {
+            "User-Agent": "MyIndexer"
+          },
+          "QueryParameters": {
+            "url": "https://www.yellowshoes.com/fr/products.json?",
+            "name": "yellow",
+            "product": "products",
+            "variant": "variants",
+            "key_limit": "limit",
+            "key_page": "page",
+            "key_nextpage": "nextpage"
+          },
+          "Path": "prod",
+          "Method": "GET",
+          "ItemType": "Variant",
+          "ItemPath": "products",
+          "Uri": "%[coveo_url]/collections/all/products/%[handle]-%[variants.id]",
+          "ClickableUri": "%[coveo_url]/collections/all/products/%[handle]",
+          "Title": "%[title]",
+          "Body": "%[body_html]",
+          "ModifiedDate": "%[updated_at]",
+          "Metadata": {
+            "documenttype": "Variant",
+            "objecttype": "Variant",
+            "ec_brand": "%[vendor]",
+            "ec_category": "%[product_type]",
+            "ec_name": "%[title]",
+            "ec_images": "%[images.*.src]",
+            "ec_price": "%[variants.price]",
+            "ec_promo_price": "%[variants.compare_at_price]",
+            "ec_item_group_id": "%[id]",
+            "ec_in_stock": "%[variants.available]",
+            "ec_slug": "%[handle]",
+            "ec_tags": "%[tags]",
+            "sku": "%[variants.sku]",
+            "ec_image": "%[variants.featured_image.src]",
+            "ec_size": "%[variants.option1]",
+            "ec_product_color": "%[variants.option2]"
+          }
+        }
+      ]
+    },
+    {
+      "Url": "https://www.yellowshoes.com/",
+      "Paging": {
+        "OffsetStart": 1,
+        "PageSize": 150,
+        "OffsetType": "page",
+        "Parameters": {
+          "Offset": "page",
+          "limit": "limit"
+        }
+      },
+      "Endpoints": [
+        {
+          "Headers": {
+            "User-Agent": "MyIndexer"
+          },
+          
+          "Path": "fr/products.json",
+          "Method": "GET",
+          "ItemType": "Product",
+          "ItemPath": "products",
+          "Uri": "%[coveo_url]/collections/all/products/%[handle]",
+          "ClickableUri": "%[coveo_url]/collections/all/products/%[handle]",
+          "Title": "%[title]",
+          "Body": "%[body_html]",
+          "ModifiedDate": "%[updated_at]",
+          "Metadata": {
+            "documenttype": "Product",
+            "objecttype": "Product",
+            "ec_brand": "%[vendor]",
+            "ec_category": "%[product_type]",
+            "ec_name": "%[title]",
+            "ec_images": "%[images.*.src]",
+            "ec_price": "%[variants[0].price]",
+            "ec_promo_price": "%[variants[0].compare_at_price]",
+            "ec_item_group_id": "%[id]",
+            "ec_in_stock": "%[variants[0].available]",
+            "ec_slug": "%[handle]",
+            "ec_tags": "%[tags]"
+          }
+        }
+      ]
+    }
+  ]
+}
