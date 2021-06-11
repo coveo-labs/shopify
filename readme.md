@@ -98,5 +98,7 @@ No Security is indexed
 https://shopify.dev/docs
 
 ## Version
+1.1 June 2021, Wim Nijmeijer
+    Fixed Global url
 1.0 May 2021, Wim Nijmeijer
 

@@ -2,6 +2,7 @@ import copy
 import sys
 import requests
 import marshal
+import json
 
 totalcount=0
 base_url="https://hg4epjdj0g.execute-api.us-east-1.amazonaws.com/prod?"
@@ -42,7 +43,7 @@ def returnvalue(key,products,key_nextpage, nextpage):
   return prod
 
 
-def process(name,key_product, key_variant, products_url, key_limit,key_page, limit, page, key_nextpage):
+def process(url, name,key_product, key_variant, products_url, key_limit,key_page, limit, page, key_nextpage):
   global base_url
   print(f'getting Products: {key_product} with variants: {key_variant} from "{products_url}"')
 
@@ -60,11 +61,13 @@ def process(name,key_product, key_variant, products_url, key_limit,key_page, lim
       pagenr = pagenr+1
       nexturl = addurl+'&'+key_page+'='+str(pagenr)
       addurl = addurl+'&'+key_page+'='+page
-      nextpage = f'{base_url}{nexturl}'
+      nextpage = f'{url}{nexturl}'
+      print(f'Nextpage: {nextpage}"')
     else:
       pagenr = 2
       nexturl = addurl+'&'+key_page+'='+str(pagenr)
-      nextpage = f'{base_url}{nexturl}'
+      nextpage = f'{url}{nexturl}'
+      print(f'Nextpage: {nextpage}"')
 
     print(f'URL: {products_url}&{addurl}')
     r = requests.get(f'{products_url}&{addurl}')
@@ -89,14 +92,18 @@ def process(name,key_product, key_variant, products_url, key_limit,key_page, lim
 def lambda_handler(event, context):
     global totalcount
     global base_url
+    
+    print(f"qs: {json.dumps(event['params']['querystring'])}")
     products_url = event['params']['querystring']['url']
+    print(f'products_url: {products_url} ')
     name = event['params']['querystring']['name']
     key_product = event['params']['querystring']['product']
     key_variant = event['params']['querystring']['variant']
     key_limit = event['params']['querystring']['key_limit']
     key_page = event['params']['querystring']['key_page']
     key_nextpage = event['params']['querystring']['key_nextpage']
-    base_url = f'{base_url}name={name}&url={products_url}&product={key_product}&variant={key_variant}&key_limit={key_limit}&key_page={key_page}&key_nextpage={key_nextpage}&'
+    url = f'{base_url}name={name}&url={products_url}&product={key_product}&variant={key_variant}&key_limit={key_limit}&key_page={key_page}&key_nextpage={key_nextpage}&'
+    print(f'url: {url} ')
     limit = ''
     page=''
     if ('limit' in event['params']['querystring']):
@@ -107,7 +114,7 @@ def lambda_handler(event, context):
 
     return {#process(name,key_product, key_variant, products_url, key_limit,key_page, limit, page)#{ #{
         'statusCode': 200,
-        'body': process(name,key_product, key_variant, products_url, key_limit,key_page, limit, page,key_nextpage),
+        'body': process(url,name,key_product, key_variant, products_url, key_limit,key_page, limit, page,key_nextpage),
         "headers": {
           "Content-Type": "application/json",
           "totalCount": totalcount
